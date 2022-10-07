@@ -1,0 +1,23 @@
+// Create a permission set that allows read access to the TEMP  
+// environment variable and read, write, and append access to SomeFile from   
+//default permission   
+PermissionSet ps = new PermissionSet(PermissionState.None);  
+ps.AddPermission(  
+new EnvironmentPermission(EnvironmentPermissionAccess.Read, "TEMP"));   
+//adding various type of file level permission  
+ps.AddPermission(  
+new FileIOPermission(FileIOPermissionAccess.Read |   
+FileIOPermissionAccess.Write | FileIOPermissionAccess.Append,   
+"SomeFile"));  
+// Make the permissions indicate all that we're allowed to do.  
+ps.Assert();
+
+
+// Deny access to the resources we specify  
+ps.Deny();   
+// Make the permissions indicate the only things that we're allowed to do.  
+ps.PermitOnly();  
+// Remove the FileIOPermissions from the permission set  
+ps.RemovePermission(typeof(FileIOPermission))  
+// Remove the EnvironmentPermission from the permission set  
+ps.RemovePermission(typeof(EnvironmentPermission));
